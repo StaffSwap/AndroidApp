@@ -16,6 +16,9 @@
             android:name=".CreateNoteActivity"
             android:exported="false" />
         <activity
+            android:name=".AddTimeTableActivity"
+            android:exported="false" />
+        <activity
             android:name=".UserHomeActivity"
             android:exported="false" />
         <activity
