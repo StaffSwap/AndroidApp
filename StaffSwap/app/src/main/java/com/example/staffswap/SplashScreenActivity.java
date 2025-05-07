@@ -1,6 +1,10 @@
 package com.example.staffswap;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,5 +24,15 @@ public class SplashScreenActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
+        new Handler().postDelayed(() -> {
+
+            Intent intent= new Intent(SplashScreenActivity.this , UserLoginActivity.class);
+            startActivity(intent);
+            finish();
+
+        }, 4000);
+
     }
 }
