@@ -28,6 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/nunito_regular"
         android:text="Welcome to  StaffSwap"
         android:textColor="@color/white"
         android:textSize="14sp"
@@ -68,6 +69,7 @@
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
             android:layout_marginBottom="50dp"
+            android:fontFamily="@font/nunito_regular"
             android:text="Please enter your credentials to access the protal." />
 
         <EditText
