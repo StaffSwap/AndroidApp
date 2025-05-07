@@ -43,21 +43,17 @@ public class UserHomeActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                 if (item.getItemId() == R.id.menu_dashboard){
-
                     loadFragment(new DashboardFragment());
 
                 }if (item.getItemId() == R.id.menu_req_leave){
-
                     loadFragment(new RequestLeaveFragment());
 
                 }
                 if (item.getItemId() == R.id.menu_time_table){
-
                     loadFragment(new TimeTableFragment());
 
                 }
                 if (item.getItemId() == R.id.menu_note){
-
                     loadFragment(new AddNoteFragment());
 
                 }
