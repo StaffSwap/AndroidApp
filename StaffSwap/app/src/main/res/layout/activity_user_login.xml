@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:text="User Login Greeting"
+        android:text="Welcome to  StaffSwap"
         android:textColor="@color/white"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,13 +48,25 @@
         app:layout_constraintTop_toBottomOf="@+id/UserTV02">
 
         <TextView
-            android:id="@+id/AdminTV03"
+            android:id="@+id/UserTV03"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="50dp"
-            android:text="Admin LoginTv"
-            android:textSize="20sp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="10dp"
+            android:text="User Login"
+            android:textSize="25sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="50dp"
+            android:text="Please enter your credentials to access the protal." />
 
         <EditText
             android:id="@+id/UserLoginText01"
@@ -69,7 +81,7 @@
             android:hint="Email"
             android:inputType="text|textEmailAddress"
             android:padding="12dp"
-            android:textSize="14sp" />
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/UserLoginText02"
@@ -85,16 +97,16 @@
             android:hint="Password"
             android:inputType="text|textPassword"
             android:padding="12dp"
-            android:textSize="14sp" />
+            android:textSize="18sp" />
 
-        <Button
-            android:id="@+id/UserLoginBtn"
+        <com.google.android.material.button.MaterialButton
+            style="@style/BlueButtonStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_margin="50dp"
-            android:text="UserLoginBtn"
-            android:textSize="15sp" />
-
+            android:text="Login"
+            android:textAllCaps="false"
+            android:textSize="20sp" />
 
 
     </LinearLayout>
