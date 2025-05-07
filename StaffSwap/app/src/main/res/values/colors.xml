@@ -12,4 +12,11 @@
     <color name="blue_4">#D1F8EF</color>
 
 
+<!--    black-->
+    <color name="black_1">#303841</color>
+
+<!--    White-->
+    <color name="dark_white">#ebf1f7</color>
+
+
 </resources>
