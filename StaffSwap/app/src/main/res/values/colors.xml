@@ -2,9 +2,5 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="editTextbackground">#FEDAE9F8</color>
-    <color name="editTextBorder">#CACACA</color>
-    <color name="UserLoginBtn">#6495ED</color>
-    <color name="blue_primary">#1976D2</color> <!-- Primary Blue -->
-    <color name="blue_ripple">#A6C2E6</color> <!-- Slightly darker for ripple -->
+<!-- Slightly darker for ripple -->
 </resources>
