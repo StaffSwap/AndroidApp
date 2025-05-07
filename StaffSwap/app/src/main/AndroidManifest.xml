@@ -13,9 +13,11 @@
         android:theme="@style/Theme.StaffSwap"
         tools:targetApi="31">
         <activity
+
             android:name=".CreateNoteActivity"
             android:exported="false" />
         <activity
+
             android:name=".AddTimeTableActivity"
             android:exported="false" />
         <activity
