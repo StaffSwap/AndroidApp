@@ -8,7 +8,7 @@
         <item name="android:paddingTop">10dp</item>
         <item name="rippleColor">@color/blue_ripple</item>
 
-        
+
     </style>
 
 </resources>
