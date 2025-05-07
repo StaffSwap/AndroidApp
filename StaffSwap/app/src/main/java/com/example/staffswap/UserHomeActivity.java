@@ -2,7 +2,7 @@ package com.example.staffswap;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toolbar;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -21,6 +21,8 @@ import com.example.staffswap.navigations.RequestLeaveFragment;
 import com.example.staffswap.navigations.TimeTableFragment;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.appcompat.widget.Toolbar;
+
 public class UserHomeActivity extends AppCompatActivity {
 
     @Override
@@ -34,31 +36,53 @@ public class UserHomeActivity extends AppCompatActivity {
             return insets;
         });
 
+
+
         DrawerLayout drawerLayout1 = findViewById(R.id.drawerLayout1);
         NavigationView navigationView1 = findViewById(R.id.navigationView1);
-//        Toolbar toolbar =  findViewById(R.id.toolbar001);
+        Toolbar toolbar =  findViewById(R.id.toolbar1);
+//        setSupportActionBar(toolbar);
+
+        loadFragment(new DashboardFragment());
+        toolbar.setTitle("Dashboard");
+
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout1.openDrawer(navigationView1);
+            }
+        });
+
 
         navigationView1.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment fragment = null;
+                String title = "";
 
-                if (item.getItemId() == R.id.menu_dashboard){
-                    loadFragment(new DashboardFragment());
+                int id = item.getItemId();
 
-                }if (item.getItemId() == R.id.menu_req_leave){
-                    loadFragment(new RequestLeaveFragment());
-
+                if (id == R.id.menu_dashboard) {
+                    fragment = new DashboardFragment();
+                    title = "Dashboard";
+                } else if (id == R.id.menu_req_leave) {
+                    fragment = new RequestLeaveFragment();
+                    title = "Request Leave";
+                } else if (id == R.id.menu_time_table) {
+                    fragment = new TimeTableFragment();
+                    title = "Time Table";
+                } else if (id == R.id.menu_note) {
+                    fragment = new AddNoteFragment();
+                    title = "Add Note";
                 }
-                if (item.getItemId() == R.id.menu_time_table){
-                    loadFragment(new TimeTableFragment());
 
+                if (fragment != null) {
+                    loadFragment(fragment);
+                    toolbar.setTitle(title);
                 }
-                if (item.getItemId() == R.id.menu_note){
-                    loadFragment(new AddNoteFragment());
 
-                }
                 drawerLayout1.closeDrawers();
-
                 return true;
             }
         });

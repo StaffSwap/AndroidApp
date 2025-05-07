@@ -15,13 +15,33 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar001"
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:background="@color/blue_3"
-                    app:subtitle="Home"
-                    />
+<!--                <androidx.appcompat.widget.Toolbar-->
+<!--                    android:id="@+id/toolbar1"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="80dp"-->
+<!--                    android:background="@color/blue_3"-->
+<!--                    app:subtitle="Home"-->
+<!--                    app:navigationIcon="@drawable/leave"-->
+<!--                    />-->
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:theme="@style/Theme.StaffSwap.AppBarOverlay">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar1"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/Theme.StaffSwap.PopupOverlay"
+                app:navigationIcon="@drawable/loginslide"
+                android:background="@color/white"
+                app:titleTextColor="@color/black_1"
+                app:title=""
+                />
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <FrameLayout
             android:id="@+id/frame_layout1"
