@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "143283762112",
+    "project_id": "staffswap-8574f",
+    "storage_bucket": "staffswap-8574f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:143283762112:android:81fd34bc4f6d6667188e25",
+        "android_client_info": {
+          "package_name": "com.example.staffswap"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmEMVVdhlz5RExMRa_ARVkQCcmjg7I3pM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
