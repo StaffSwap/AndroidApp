@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/menu_dashboard"
+            android:title="Dashboard"
+            android:icon="@drawable/dashboard"
+            />
+        <item
+            android:id="@+id/menu_req_leave"
+            android:title="Request leave"
+            android:icon="@drawable/leave"
+            />
+
+        <item
+            android:id="@+id/menu_time_table"
+            android:title="Time Table"
+            android:icon="@drawable/timetable"
+            />
+
+        <item
+            android:id="@+id/menu_note"
+            android:title="Add Note"
+            android:icon="@drawable/note"
+            />
+
+
+
+
+
+    </group>
+
+
+</menu>

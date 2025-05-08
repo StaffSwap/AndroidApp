@@ -2,6 +2,22 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="editTextbackground">#8C9EFF</color>
-    <color name="editTextBorder">#D72B2B</color>
+    <color name="editTextbackground">#FEDAE9F8</color>
+    <color name="editTextBorder">#CACACA</color>
+
+
+    <color name="blue_1">#3674B5</color>
+    <color name="blue_2">#578FCA</color>
+    <color name="blue_3">#A1E3F9</color>
+    <color name="blue_4">#D1F8EF</color>
+    <color name="blue_5">#8C9EFF</color>
+
+
+<!--    black-->
+    <color name="black_1">#303841</color>
+
+<!--    White-->
+    <color name="dark_white">#ebf1f7</color>
+
+
 </resources>

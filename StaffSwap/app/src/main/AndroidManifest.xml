@@ -13,10 +13,24 @@
         android:theme="@style/Theme.StaffSwap"
         tools:targetApi="31">
         <activity
-            android:name=".UserLoginActivity"
+
+            android:name=".CreateNoteActivity"
+            android:exported="false" />
+        <activity
+
+            android:name=".AddTimeTableActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserHomeActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserLoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SplashScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
