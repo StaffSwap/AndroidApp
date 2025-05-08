@@ -1,6 +1,7 @@
 package com.example.staffswap;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import com.example.staffswap.model.CustomAlert;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -17,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class UserLoginActivity extends AppCompatActivity {
 
     EditText NIC,Password;
+    String nic,password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +44,60 @@ public class UserLoginActivity extends AppCompatActivity {
                 String  password = Password.getText().toString();
                 if(nic.isEmpty()){
                     CustomAlert.showCustomAlert(UserLoginActivity.this, "Error !", "Please Fill NIC", R.drawable.cancel);
+                } else if (password.isEmpty()) {
+                    CustomAlert.showCustomAlert(UserLoginActivity.this, "Error !", "Please Fill Password", R.drawable.cancel);
                 } else if (password.length() > 5) {
-                    Intent intent = new Intent(UserLoginActivity.this, UserHomeActivity.class);
-                    startActivity(intent);
-
+                    CustomAlert.showCustomAlert(UserLoginActivity.this, "Error !", "Password must contain at least 5 characters", R.drawable.cancel);
+                }
+                else {
+                    searchFirebase();
                 }
             }
         });
+    }
+    private  void searchFirebase(){
 
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        firestore.collection("User")
+                .whereEqualTo("NIC", nic).whereEqualTo("Password", password).get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if (queryDocumentSnapshots.isEmpty()) {
+                            customAlert.showCustomAlert(UserLoginActivity.this,"Error ","Invalid UserName or Password",R.drawable.cancel);
+                        } else {
+                            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
 
+                                String documentId = document.getId();
+                                String name = document.getString("Name");
+                                String email = document.getString("Email");
+                                String subject = document.getString("Subject");
+                                String number = document.getString("Number");
+                                String nic = document.getString("NIC");
+
+                                SharedPreferences userSharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = userSharedPreferences.edit();
+
+                                editor.putString("UserID", documentId);
+                                editor.putString("UserName", name);
+                                editor.putString("UserEmail", email);
+                                editor.putString("UserMobile", number);
+                                editor.putString("UserNIC", nic);
+                                editor.putString("UserSubject", subject);
+                                editor.apply();
+
+                                Intent intent01 = new Intent(UserLoginActivity.this, UserHomeActivity.class);
+                                startActivity(intent01);
+                                finish();
+                            }
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        customAlert.showCustomAlert(UserLoginActivity.this,"Error ","Fail to load Data ! ",R.drawable.cancel);
+                    }
+                });
     }
 }
+
