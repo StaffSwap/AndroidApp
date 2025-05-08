@@ -23,6 +23,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.staffswap.R;
+import com.example.staffswap.UserLoginActivity;
+import com.example.staffswap.model.CustomAlert;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,12 +47,12 @@ public class RequestLeaveFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-       View view = inflater.inflate(R.layout.fragment_request_leave, container, false);
+        View view = inflater.inflate(R.layout.fragment_request_leave, container, false);
 
         calendarView = view.findViewById(R.id.calendarView01);
         TextView dateTextView = view.findViewById(R.id.SelectDateTV);
         EditText leaveReason = view.findViewById(R.id.Leavediscription);
-        leaveDescription = leaveReason.getText().toString();
+
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -59,20 +62,21 @@ public class RequestLeaveFragment extends Fragment {
             }
         });
 
-       spinner = view.findViewById(R.id.LeaveSpinner);
-       recyclerView = view.findViewById(R.id.LeaveRecylerView);
-       Button addLeaveButton = view.findViewById(R.id.RequestLeaveSubmitBtn);
+        spinner = view.findViewById(R.id.LeaveSpinner);
+        recyclerView = view.findViewById(R.id.LeaveRecylerView);
+        Button addLeaveButton = view.findViewById(R.id.RequestLeaveSubmitBtn);
 
         addLeaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                leaveDescription = leaveReason.getText().toString();
 
                 if (selectedLeaveType.equals("Select Leave Type ---")) {
-                    CustomAlert.showCustomAlert(UserLoginActivity.this,"Error ","Please select a Leave Type",R.drawable.cancel);
+                    CustomAlert.showCustomAlert(requireActivity(),"Error ","Please select a Leave Type",R.drawable.cancel);
                 } else if (selectedDate == null) {
-                    CustomAlert.showCustomAlert(UserLoginActivity.this,"Error ","Please select a date",R.drawable.cancel);
+                    CustomAlert.showCustomAlert(requireActivity(),"Error ","Please select a date",R.drawable.cancel);
                 } else if (leaveDescription.isEmpty()) {
-                    CustomAlert.showCustomAlert(UserLoginActivity.this,"Error ","Please enter a description",R.drawable.cancel);
+                    CustomAlert.showCustomAlert(requireActivity(),"Error ","Please enter a description",R.drawable.cancel);
                 } else {
                     Log.e("Leave Request", "Leave Type: " + selectedLeaveType + ", Date: " + selectedDate + ", Description: " + leaveDescription);
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -87,8 +91,8 @@ public class RequestLeaveFragment extends Fragment {
                             .add(Leave)
                             .addOnSuccessListener(documentReference -> {
                                 CustomAlert.showCustomAlert(getContext(),"Success","Successfully Add Field",R.drawable.checked);
-                                jobFiled.setText("");
-                                refresh();
+//                                jobFiled.setText("");
+//                                refresh();
 
                             })
                             .addOnFailureListener(e -> {
@@ -140,7 +144,7 @@ public class RequestLeaveFragment extends Fragment {
 
         loadLeaves();
 
-       return view;
+        return view;
     }
     private void loadLeaves(){
 
