@@ -1,6 +1,7 @@
 package com.example.staffswap;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -41,10 +42,10 @@ public class UserHomeActivity extends AppCompatActivity {
         DrawerLayout drawerLayout1 = findViewById(R.id.drawerLayout1);
         NavigationView navigationView1 = findViewById(R.id.navigationView1);
         Toolbar toolbar =  findViewById(R.id.toolbar1);
-//        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
 
         loadFragment(new DashboardFragment());
-        toolbar.setTitle("Dashboard");
+//        toolbar.setTitle("Dashboard");
 
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -65,21 +66,21 @@ public class UserHomeActivity extends AppCompatActivity {
 
                 if (id == R.id.menu_dashboard) {
                     fragment = new DashboardFragment();
-                    title = "Dashboard";
+//                    title = "Dashboard";
                 } else if (id == R.id.menu_req_leave) {
                     fragment = new RequestLeaveFragment();
-                    title = "Request Leave";
+//                    title = "Request Leave";
                 } else if (id == R.id.menu_time_table) {
                     fragment = new TimeTableFragment();
-                    title = "Time Table";
+//                    title = "Time Table";
                 } else if (id == R.id.menu_note) {
                     fragment = new AddNoteFragment();
-                    title = "Add Note";
+//                    title = "Add Note";
                 }
 
                 if (fragment != null) {
                     loadFragment(fragment);
-                    toolbar.setTitle(title);
+//                    toolbar.setTitle(title);
                 }
 
                 drawerLayout1.closeDrawers();
@@ -87,19 +88,34 @@ public class UserHomeActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
 
-    private void loadFragment(Fragment fragment){
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.profile) {
+            // Handle user profile
+            return true;
+        } else if (id == R.id.action_notifications) {
+            // Handle notification action
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
+    private void loadFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container_view1, fragment,null)
+        fragmentTransaction.replace(R.id.fragment_container_view1, fragment, null)
                 .setReorderingAllowed(true)
                 .commit();
     }
+
+
 }
