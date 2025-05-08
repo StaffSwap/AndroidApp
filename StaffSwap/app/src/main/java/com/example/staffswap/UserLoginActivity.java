@@ -22,7 +22,7 @@ public class UserLoginActivity extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
-        });
+        }); 
         Button loginButton = findViewById(R.id.UserLoginBtn);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
