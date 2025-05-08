@@ -9,19 +9,28 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.staffswap.R;
+import com.example.staffswap.UserLoginActivity;
+import com.example.staffswap.model.CustomAlert;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RequestLeaveFragment extends Fragment {
 
@@ -29,22 +38,70 @@ public class RequestLeaveFragment extends Fragment {
     List<Leave> LeaveList;
     LeaveListAdapter leaveListAdapter;
     RecyclerView recyclerView;
+    CalendarView calendarView;
+    String selectedLeaveType ,selectedDate, leaveDescription;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
-       View view = inflater.inflate(R.layout.fragment_request_leave, container, false);
-       spinner = view.findViewById(R.id.LeaveSpinner);
-       recyclerView = view.findViewById(R.id.LeaveRecylerView);
-       Button addLeaveButton = view.findViewById(R.id.RequestLeaveSubmitBtn);
+        View view = inflater.inflate(R.layout.fragment_request_leave, container, false);
+
+        calendarView = view.findViewById(R.id.calendarView01);
+        TextView dateTextView = view.findViewById(R.id.SelectDateTV);
+        EditText leaveReason = view.findViewById(R.id.Leavediscription);
+
+
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                selectedDate = year + "/" + (month + 1) + "/" + dayOfMonth;
+                dateTextView.setText(selectedDate);
+            }
+        });
+
+        spinner = view.findViewById(R.id.LeaveSpinner);
+        recyclerView = view.findViewById(R.id.LeaveRecylerView);
+        Button addLeaveButton = view.findViewById(R.id.RequestLeaveSubmitBtn);
 
         addLeaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent01 = new Intent(requireActivity(), AddTimeTableActivity.class);
-//                startActivity(intent01);
+                leaveDescription = leaveReason.getText().toString();
+
+                if (selectedLeaveType.equals("Select Leave Type ---")) {
+                    CustomAlert.showCustomAlert(requireActivity(),"Error ","Please select a Leave Type",R.drawable.cancel);
+                } else if (selectedDate == null) {
+                    CustomAlert.showCustomAlert(requireActivity(),"Error ","Please select a date",R.drawable.cancel);
+                } else if (leaveDescription.isEmpty()) {
+                    CustomAlert.showCustomAlert(requireActivity(),"Error ","Please enter a description",R.drawable.cancel);
+                } else {
+                    Log.e("Leave Request", "Leave Type: " + selectedLeaveType + ", Date: " + selectedDate + ", Description: " + leaveDescription);
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                    Map<String, Object> Leave = new HashMap<>();
+                    Leave.put("User", "Ravishka");
+                    Leave.put("LeaveType", selectedLeaveType);
+                    Leave.put("LeaveDate", selectedDate);
+                    Leave.put("LeaveDescription", leaveDescription);
+
+                    db.collection("Leave")
+                            .add(Leave)
+                            .addOnSuccessListener(documentReference -> {
+                                CustomAlert.showCustomAlert(getContext(),"Success","Successfully Add Field",R.drawable.checked);
+//                                jobFiled.setText("");
+//                                refresh();
+
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(getContext(),"Job field added Error" ,Toast.LENGTH_SHORT).show();
+                                CustomAlert.showCustomAlert(getContext(),"Error","Job field added Error",R.drawable.cancel);
+
+                            });
+
+                }
 
             }
         });
@@ -66,7 +123,8 @@ public class RequestLeaveFragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedLeave = parent.getItemAtPosition(position).toString();
+                selectedLeaveType = parent.getItemAtPosition(position).toString();
+                Log.e("Selected Leave Type", selectedLeaveType);
                 // Do something with selectedLeave
             }
 
@@ -86,7 +144,7 @@ public class RequestLeaveFragment extends Fragment {
 
         loadLeaves();
 
-       return view;
+        return view;
     }
     private void loadLeaves(){
 
@@ -98,6 +156,8 @@ public class RequestLeaveFragment extends Fragment {
         leaveListAdapter.notifyDataSetChanged();
     }
 }
+
+
 
 
 class Leave{

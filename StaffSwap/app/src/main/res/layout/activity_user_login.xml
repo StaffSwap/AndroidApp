@@ -82,7 +82,7 @@
             android:drawableLeft="@drawable/user"
             android:drawablePadding="10dp"
             android:ems="10"
-            android:hint="Email"
+            android:hint="NIC"
             android:inputType="text|textEmailAddress"
             android:padding="12dp"
             android:textSize="18sp" />
