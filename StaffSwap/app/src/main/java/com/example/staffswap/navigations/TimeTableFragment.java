@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -34,7 +33,7 @@ RecyclerView recyclerView;
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View  view =inflater.inflate(R.layout.fragment_time_table, container, false);
-        spinner = view.findViewById(R.id.DaySpinner);
+        spinner = view.findViewById(R.id.AddTimeTableSpinner);
         recyclerView = view.findViewById(R.id.classRecyclerview);
 
 
@@ -78,11 +77,11 @@ RecyclerView recyclerView;
     }
     private void loadTable(){
 
-        table01List.add(new Table01("John Doe", "2023-10-00"));
-        table01List.add(new Table01("John Doe", "2023-10-00"));
-        table01List.add(new Table01("John Doe", "2023-10-00"));
-        table01List.add(new Table01("John Doe", "2023-10-00"));
-        table01List.add(new Table01("John Doe", "2023-10-00"));
+        table01List.add(new Table01("11-A", "8.00 - 9.00"));
+        table01List.add(new Table01("11-B", "9.00 - 10.00"));
+        table01List.add(new Table01("11-C", "10.00 - 11.00"));
+        table01List.add(new Table01("11-E", "11.00 - 12.00"));
+        table01List.add(new Table01("11-D", "12.00 - 1.00"));
 
         table01ListAdapter.notifyDataSetChanged();
     }

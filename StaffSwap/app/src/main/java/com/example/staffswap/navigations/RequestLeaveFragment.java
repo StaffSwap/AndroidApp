@@ -1,5 +1,6 @@
 package com.example.staffswap.navigations;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -37,6 +38,16 @@ public class RequestLeaveFragment extends Fragment {
        View view = inflater.inflate(R.layout.fragment_request_leave, container, false);
        spinner = view.findViewById(R.id.LeaveSpinner);
        recyclerView = view.findViewById(R.id.LeaveRecylerView);
+       Button addLeaveButton = view.findViewById(R.id.RequestLeaveSubmitBtn);
+
+        addLeaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent intent01 = new Intent(requireActivity(), AddTimeTableActivity.class);
+//                startActivity(intent01);
+
+            }
+        });
 
         ArrayList<String> leaveTypes = new ArrayList<>();
         leaveTypes.add("Select Leave Type ---");

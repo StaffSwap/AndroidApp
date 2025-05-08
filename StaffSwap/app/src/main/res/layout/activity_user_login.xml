@@ -104,11 +104,11 @@
             android:textSize="18sp" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/UserLoginBtn"
             style="@style/BlueButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_margin="50dp"
-            android:fontFamily="@font/nunito_bold"
             android:text="Login"
             android:textAllCaps="false"
             android:textSize="20sp" />
