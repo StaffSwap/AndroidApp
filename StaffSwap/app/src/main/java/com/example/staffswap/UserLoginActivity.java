@@ -8,6 +8,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.example.staffswap.model.CustomAlert;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -40,16 +46,13 @@ public class UserLoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-               String nic = NIC.getText().toString();
-                String  password = Password.getText().toString();
+               nic = NIC.getText().toString();
+               password = Password.getText().toString();
                 if(nic.isEmpty()){
                     CustomAlert.showCustomAlert(UserLoginActivity.this, "Error !", "Please Fill NIC", R.drawable.cancel);
                 } else if (password.isEmpty()) {
                     CustomAlert.showCustomAlert(UserLoginActivity.this, "Error !", "Please Fill Password", R.drawable.cancel);
-                } else if (password.length() > 5) {
-                    CustomAlert.showCustomAlert(UserLoginActivity.this, "Error !", "Password must contain at least 5 characters", R.drawable.cancel);
-                }
-                else {
+                }else {
                     searchFirebase();
                 }
             }
