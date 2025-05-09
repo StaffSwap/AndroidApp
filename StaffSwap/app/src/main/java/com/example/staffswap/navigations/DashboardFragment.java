@@ -1,5 +1,7 @@
 package com.example.staffswap.navigations;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -7,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.staffswap.R;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +34,14 @@ public class DashboardFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_dashboard, container, false);
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        String UserName = sharedPreferences.getString("UserName", "");
+
+        Log.i("username", UserName);
+
+        TextView textViewDashboardUsername = view.findViewById(R.id.textViewDashboardUsername);
+        textViewDashboardUsername.setText("Hey, "+UserName);
 
         sessionRecyclerView = view.findViewById(R.id.dashboardRecyclerView);
         LinearLayoutManager linearLayoutManager01 = new LinearLayoutManager(requireActivity());
