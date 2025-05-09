@@ -20,4 +20,8 @@
     <color name="dark_white">#ebf1f7</color>
 
 
+    <color name="dark_red">#8E0303</color>
+    <color name="white_red">#FBF3F3</color>
+
+
 </resources>
