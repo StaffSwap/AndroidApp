@@ -121,7 +121,7 @@ public class AddTimeTableActivity extends AppCompatActivity {
                     Sessions.put("10.50 AM - 11.30 AM", lesson05class);
                     Sessions.put("11.30 AM - 12.10 PM", lesson06class);
                     Sessions.put("12.10 PM - 12.50 PM", lesson07class);
-                    Sessions.put("12.50 PM - 1.30 PM", lesson08class);
+                    Sessions.put("12.50 PM - 13.30 PM", lesson08class);
 
                     db.collection("Schedule")
                             .document(UserName)

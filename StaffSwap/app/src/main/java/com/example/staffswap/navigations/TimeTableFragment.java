@@ -25,8 +25,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -105,7 +109,24 @@ public class TimeTableFragment extends Fragment {
                         Map<String, String> sessions = (Map<String, String>) documentSnapshot.get("sessions");
 
                         if (sessions != null) {
-                            for (Map.Entry<String, String> entry : sessions.entrySet()) {
+                            List<Map.Entry<String, String>> sortedEntries = new ArrayList<>(sessions.entrySet());
+
+                            SimpleDateFormat format = new SimpleDateFormat("h.mm a", Locale.US);
+
+                            Collections.sort(sortedEntries, (entry1, entry2) -> {
+                                try {
+                                    String time1 = entry1.getKey().split(" - ")[0];
+                                    String time2 = entry2.getKey().split(" - ")[0];
+                                    Date date1 = format.parse(time1);
+                                    Date date2 = format.parse(time2);
+                                    return date1.compareTo(date2);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    return 0;
+                                }
+                            });
+
+                            for (Map.Entry<String, String> entry : sortedEntries) {
                                 sessionItemList.add(new SessionItem(entry.getKey(), entry.getValue()));
                             }
                         }
