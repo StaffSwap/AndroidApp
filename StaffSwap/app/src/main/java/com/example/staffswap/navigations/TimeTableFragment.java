@@ -82,7 +82,7 @@ public class TimeTableFragment extends Fragment {
                 String selectedDay = parent.getItemAtPosition(position).toString();
 
                     loadTimeTable(selectedDay);
-                
+
                     sessionItemList.clear();
                     tableListAdapter.notifyDataSetChanged();
 
