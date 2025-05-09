@@ -25,11 +25,6 @@ public class SplashScreenActivity extends AppCompatActivity {
             return insets;
         });
 
-
-
-
-        
-
         new Handler().postDelayed(() -> {
 
             Intent intent= new Intent(SplashScreenActivity.this , UserLoginActivity.class);
