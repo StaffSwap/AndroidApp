@@ -9,7 +9,7 @@
 
     <item
         android:id="@+id/action_notifications"
-        android:icon="@drawable/lock"
+        android:icon="@drawable/bell"
         android:title="Notifications"
         app:showAsAction="always" />
 </menu>
