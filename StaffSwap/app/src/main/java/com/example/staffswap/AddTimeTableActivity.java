@@ -31,6 +31,7 @@ import java.util.Map;
 public class AddTimeTableActivity extends AppCompatActivity {
     Spinner spinner;
     String selectedDay;
+    TextInputLayout lesson01, lesson02, lesson03, lesson04, lesson05, lesson06, lesson07, lesson08;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,14 +75,14 @@ public class AddTimeTableActivity extends AppCompatActivity {
             }
         });
 
-        TextInputLayout lesson01 = findViewById(R.id.textInputLayoutClass01);
-        TextInputLayout lesson02 = findViewById(R.id.textInputLayout02);
-        TextInputLayout lesson03 = findViewById(R.id.textInputLayout03);
-        TextInputLayout lesson04 = findViewById(R.id.textInputLayout04);
-        TextInputLayout lesson05 = findViewById(R.id.textInputLayout05);
-        TextInputLayout lesson06 = findViewById(R.id.textInputLayout06);
-        TextInputLayout lesson07 = findViewById(R.id.textInputLayout07);
-        TextInputLayout lesson08 = findViewById(R.id.textInputLayout08);
+         lesson01 = findViewById(R.id.textInputLayoutClass01);
+         lesson02 = findViewById(R.id.textInputLayout02);
+         lesson03 = findViewById(R.id.textInputLayout03);
+         lesson04 = findViewById(R.id.textInputLayout04);
+         lesson05 = findViewById(R.id.textInputLayout05);
+         lesson06 = findViewById(R.id.textInputLayout06);
+         lesson07 = findViewById(R.id.textInputLayout07);
+         lesson08 = findViewById(R.id.textInputLayout08);
 
 
 
@@ -107,36 +108,39 @@ public class AddTimeTableActivity extends AppCompatActivity {
                 }else{
                     Log.e("time table class ", selectedDay);
 
-                Log.e("time table class", lesson01class);
-                Log.e("time table class", lesson02class);
-                Log.e("time table class", lesson03class);
-                Log.e("time table class", lesson04class);
-                Log.e("time table class", lesson05class);
-                Log.e("time table class", lesson06class);
-                Log.e("time table class", lesson07class);
-                Log.e("time table class", lesson08class);
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
                     String UserName = sharedPreferences.getString("UserName", "");
-                    String teacherId = "UserName";
+
 
                     Map<String, Object> Sessions = new HashMap<>();
-                    Sessions.put("1", lesson01class);
-                    Sessions.put("2", lesson02class);
-                    Sessions.put("3", lesson03class);
-                    Sessions.put("4", lesson04class);
-                    Sessions.put("5", lesson05class);
-                    Sessions.put("6", lesson06class);
-                    Sessions.put("7", lesson07class);
-                    Sessions.put("8", lesson08class);
+                    Sessions.put("8.00 AM - 8.40 AM", lesson01class);
+                    Sessions.put("8.40 AM - 9.20 AM", lesson02class);
+                    Sessions.put("9.20 AM - 10.00 AM", lesson03class);
+                    Sessions.put("10.00 AM - 10.40 AM", lesson04class);
+                    Sessions.put("10.50 AM - 11.30 AM", lesson05class);
+                    Sessions.put("11.30 AM - 12.10 PM", lesson06class);
+                    Sessions.put("12.10 PM - 12.50 PM", lesson07class);
+                    Sessions.put("12.50 PM - 13.30 PM", lesson08class);
 
                     db.collection("Schedule")
-                            .document(teacherId)
+                            .document(UserName)
                             .collection("TimeTable")
                             .document(selectedDay)
                             .set(Collections.singletonMap("sessions", Sessions))
                             .addOnSuccessListener(aVoid -> {
                                 CustomAlert.showCustomAlert(AddTimeTableActivity.this,"Success ",selectedDay+" timetable added successfully",R.drawable.checked);
+                                lesson01.getEditText().setText("");
+                                lesson02.getEditText().setText("");
+                                lesson03.getEditText().setText("");
+                                lesson04.getEditText().setText("");
+                                lesson05.getEditText().setText("");
+                                lesson06.getEditText().setText("");
+                                lesson07.getEditText().setText("");
+                                lesson08.getEditText().setText("");
+
+                                spinner.setSelection(0);
+
 
                             })
                             .addOnFailureListener(e -> {
