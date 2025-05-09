@@ -219,6 +219,7 @@ class LeaveListAdapter extends RecyclerView.Adapter<LeaveListAdapter.LeaveViewHo
             LeaveDateTextView = itemView.findViewById(R.id.LeaveDateTV);
             Status = itemView.findViewById(R.id.LeaveStatusBtn);
             ContainerView = itemView;
+
         }
     }
 
