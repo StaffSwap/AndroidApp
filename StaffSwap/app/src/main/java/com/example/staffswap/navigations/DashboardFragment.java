@@ -58,10 +58,10 @@ public class DashboardFragment extends Fragment {
 
     private void loadSessions(){
 
-        SessionList.add(new Sessions("8.00am - 8.45am", "class 10 A") );
-        SessionList.add(new Sessions("8.45am - 9.30am", "class 11 B") );
-        SessionList.add(new Sessions("9.30am - 10.15am", "class 09 A") );
-        SessionList.add(new Sessions("10.15am - 11.00am", "class 07 C") );
+        SessionList.add(new Sessions("8.00am - 8.40am", "class 10 A") );
+        SessionList.add(new Sessions("8.40am - 9.20am", "class 11 B") );
+        SessionList.add(new Sessions("9.20am - 10.00am", "class 09 A") );
+        SessionList.add(new Sessions("10.00am - 10.40am", "class 07 C") );
         SessionListAdapter adapter = new SessionListAdapter(SessionList);
         sessionRecyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
