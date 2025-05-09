@@ -96,12 +96,14 @@ public class RequestLeaveFragment extends Fragment {
                     db.collection("Leave")
                             .add(Leave)
                             .addOnSuccessListener(documentReference -> {
-                                CustomAlert.showCustomAlert(getContext(),"Success","Successfully Add Field",R.drawable.checked);
+                                CustomAlert.showCustomAlert(getContext(), "Success", "Successfully Add Leave", R.drawable.checked);
+                                loadLeaves();
+                                leaveReason.setText("");
+                                spinner.setSelection(0);
 
                             })
                             .addOnFailureListener(e -> {
-                                Toast.makeText(getContext(),"Job field added Error" ,Toast.LENGTH_SHORT).show();
-                                CustomAlert.showCustomAlert(getContext(),"Error","Job field added Error",R.drawable.cancel);
+                                CustomAlert.showCustomAlert(getContext(), "Error", " Unsuccessfully Process", R.drawable.cancel);
 
                             });
                 }
