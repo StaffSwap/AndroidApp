@@ -1,6 +1,8 @@
 package com.example.staffswap.navigations;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -25,6 +27,7 @@ import android.widget.Toast;
 import com.example.staffswap.R;
 import com.example.staffswap.UserLoginActivity;
 import com.example.staffswap.model.CustomAlert;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -81,8 +84,11 @@ public class RequestLeaveFragment extends Fragment {
                     Log.e("Leave Request", "Leave Type: " + selectedLeaveType + ", Date: " + selectedDate + ", Description: " + leaveDescription);
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+                    SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+                    String UserName = sharedPreferences.getString("UserName", "");
+
                     Map<String, Object> Leave = new HashMap<>();
-                    Leave.put("User", "Ravishka");
+                    Leave.put("User", UserName);
                     Leave.put("LeaveType", selectedLeaveType);
                     Leave.put("LeaveDate", selectedDate);
                     Leave.put("LeaveDescription", leaveDescription);
@@ -91,8 +97,6 @@ public class RequestLeaveFragment extends Fragment {
                             .add(Leave)
                             .addOnSuccessListener(documentReference -> {
                                 CustomAlert.showCustomAlert(getContext(),"Success","Successfully Add Field",R.drawable.checked);
-//                                jobFiled.setText("");
-//                                refresh();
 
                             })
                             .addOnFailureListener(e -> {
@@ -100,9 +104,7 @@ public class RequestLeaveFragment extends Fragment {
                                 CustomAlert.showCustomAlert(getContext(),"Error","Job field added Error",R.drawable.cancel);
 
                             });
-
                 }
-
             }
         });
 
@@ -125,18 +127,18 @@ public class RequestLeaveFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedLeaveType = parent.getItemAtPosition(position).toString();
                 Log.e("Selected Leave Type", selectedLeaveType);
-                // Do something with selectedLeave
+
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // Handle no selection
+
             }
         });
 
 
         LinearLayoutManager linearLayoutManager01 = new LinearLayoutManager(requireActivity());
-        linearLayoutManager01.setOrientation(LinearLayoutManager.VERTICAL);
+        linearLayoutManager01.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager01);
         LeaveList = new ArrayList<>();
         leaveListAdapter = new LeaveListAdapter(LeaveList);
@@ -148,17 +150,30 @@ public class RequestLeaveFragment extends Fragment {
     }
     private void loadLeaves(){
 
-        LeaveList.add(new Leave("John Doe", "2023-10-00", "Pending"));
-        LeaveList.add(new Leave("John Doe", "2023-10-01", "Pending"));
-        LeaveList.add(new Leave("John Doe", "2023-10-02", "Pending"));
-        LeaveList.add(new Leave("John Doe", "2023-10-02", "Pending"));
-        LeaveList.add(new Leave("John Doe", "2023-10-06", "Pending"));
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("Leave")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+
+                    LeaveList.clear();
+                    for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+
+                        String name = documentSnapshot.getString("LeaveType");
+                        String date = documentSnapshot.getString("LeaveDate");
+                        String status = "Pending";
+
+                        LeaveList.add(new Leave(name, date, status));
+                    }
+                    leaveListAdapter.notifyDataSetChanged();
+
+                })
+                .addOnFailureListener(e -> {
+                });
+
         leaveListAdapter.notifyDataSetChanged();
     }
 }
-
-
-
 
 class Leave{
 
