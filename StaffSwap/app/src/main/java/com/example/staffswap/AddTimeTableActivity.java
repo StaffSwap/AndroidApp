@@ -19,8 +19,12 @@ import androidx.dynamicanimation.animation.SpringAnimation;
 import com.example.staffswap.model.CustomAlert;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AddTimeTableActivity extends AppCompatActivity {
     Spinner spinner;
@@ -60,7 +64,6 @@ public class AddTimeTableActivity extends AppCompatActivity {
                 selectedDay = parent.getItemAtPosition(position).toString();
                 Log.e("Selected Day ", selectedDay);
 
-                // Do something with selectedLeave
             }
 
             @Override
@@ -94,14 +97,7 @@ public class AddTimeTableActivity extends AppCompatActivity {
                 String lesson07class = lesson07.getEditText().getText().toString().trim();
                 String lesson08class = lesson08.getEditText().getText().toString().trim();
 
-//                Log.e("time table class", lesson01class);
-//                Log.e("time table class", lesson02class);
-//                Log.e("time table class", lesson03class);
-//                Log.e("time table class", lesson04class);
-//                Log.e("time table class", lesson05class);
-//                Log.e("time table class", lesson06class);
-//                Log.e("time table class", lesson07class);
-//                Log.e("time table class", lesson08class);
+
 
 
                 if (selectedDay.equals("Select Day ---")) {
@@ -117,10 +113,36 @@ public class AddTimeTableActivity extends AppCompatActivity {
                 Log.e("time table class", lesson06class);
                 Log.e("time table class", lesson07class);
                 Log.e("time table class", lesson08class);
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    String teacherId = "teacher01";
+
+                    Map<String, Object> Sessions = new HashMap<>();
+                    Sessions.put("1", lesson01class);
+                    Sessions.put("2", lesson02class);
+                    Sessions.put("3", lesson03class);
+                    Sessions.put("4", lesson04class);
+                    Sessions.put("5", lesson05class);
+                    Sessions.put("6", lesson06class);
+                    Sessions.put("7", lesson07class);
+                    Sessions.put("8", lesson08class);
+
+                    db.collection("Schedule")
+                            .document(teacherId)
+                            .collection("TimeTable")
+                            .document(selectedDay)
+                            .set(Collections.singletonMap("sessions", Sessions))
+                            .addOnSuccessListener(aVoid -> {
+                                CustomAlert.showCustomAlert(AddTimeTableActivity.this,"Success ",selectedDay+" timetable added successfully",R.drawable.checked);
+
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.e("Firestore", "Error adding timetable", e);
+                            });
 
                 }
             }
         });
+
 
 
     }
