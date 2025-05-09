@@ -80,12 +80,12 @@ public class TimeTableFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedDay = parent.getItemAtPosition(position).toString();
-                if (!selectedDay.equals("Select Day ---")) {
+
                     loadTimeTable(selectedDay);
-                } else {
+                
                     sessionItemList.clear();
                     tableListAdapter.notifyDataSetChanged();
-                }
+
             }
 
             @Override
