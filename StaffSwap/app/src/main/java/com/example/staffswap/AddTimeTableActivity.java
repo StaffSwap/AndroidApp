@@ -1,5 +1,7 @@
 package com.example.staffswap;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -114,7 +116,9 @@ public class AddTimeTableActivity extends AppCompatActivity {
                 Log.e("time table class", lesson07class);
                 Log.e("time table class", lesson08class);
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    String teacherId = "teacher01";
+                    SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+                    String UserName = sharedPreferences.getString("UserName", "");
+                    String teacherId = "UserName";
 
                     Map<String, Object> Sessions = new HashMap<>();
                     Sessions.put("1", lesson01class);
