@@ -203,14 +203,27 @@ public class TimeTableFragment extends Fragment {
         return new TableViewHolder(view);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull TableViewHolder holder, int position) {
-        SessionItem item = sessionItems.get(position);
-        holder.ClassTextView.setText(item.getClassName());
-        holder.TimeTextView.setText( item.getSessionNumber());
-    }
+     @Override
+     public void onBindViewHolder(@NonNull TableViewHolder holder, int position) {
+         SessionItem item = sessionItems.get(position);
 
-    @Override
+         if (item.getClassName().equals("")) {
+             holder.ClassTextView.setText("Free");
+             holder.ClassTextView.setTextColor(
+                     holder.ClassTextView.getContext().getResources().getColor(R.color.blue_1)
+             );
+         } else {
+             holder.ClassTextView.setText(item.getClassName());
+             holder.ClassTextView.setTextColor(
+                     holder.ClassTextView.getContext().getResources().getColor(R.color.black) // or your default color
+             );
+         }
+
+         holder.TimeTextView.setText(item.getSessionNumber());
+     }
+
+
+     @Override
     public int getItemCount() {
         return sessionItems.size();
     }
