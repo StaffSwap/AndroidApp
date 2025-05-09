@@ -1,5 +1,6 @@
 package com.example.staffswap.navigations;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -7,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +17,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.staffswap.AddTimeTableActivity;
 import com.example.staffswap.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +39,19 @@ RecyclerView recyclerView;
         View  view =inflater.inflate(R.layout.fragment_time_table, container, false);
         spinner = view.findViewById(R.id.AddTimeTableSpinner);
         recyclerView = view.findViewById(R.id.classRecyclerview);
+
+
+        FloatingActionButton add_timeTable = view.findViewById(R.id.floatingActionButtonAddTimeTable);
+        add_timeTable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Log.i("StaffSwap","button ok");
+                Intent intent;
+                intent = new Intent(requireActivity(), AddTimeTableActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         ArrayList<String> leaveTypes = new ArrayList<>();
