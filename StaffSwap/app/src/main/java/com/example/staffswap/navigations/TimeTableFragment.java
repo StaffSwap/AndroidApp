@@ -1,6 +1,8 @@
 package com.example.staffswap.navigations;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,154 +22,158 @@ import android.widget.TextView;
 import com.example.staffswap.AddTimeTableActivity;
 import com.example.staffswap.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class TimeTableFragment extends Fragment {
-Spinner spinner;
-    List<Table01> table01List;
-    TableListAdapter table01ListAdapter;
-RecyclerView recyclerView;
-
+    Spinner spinner;
+    List<SessionItem> sessionItemList;
+    TableListAdapter tableListAdapter;
+    RecyclerView recyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View  view =inflater.inflate(R.layout.fragment_time_table, container, false);
+        View view = inflater.inflate(R.layout.fragment_time_table, container, false);
+
         spinner = view.findViewById(R.id.AddTimeTableSpinner);
         recyclerView = view.findViewById(R.id.classRecyclerview);
-
-
         FloatingActionButton add_timeTable = view.findViewById(R.id.floatingActionButtonAddTimeTable);
-        add_timeTable.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                Log.i("StaffSwap","button ok");
-                Intent intent;
-                intent = new Intent(requireActivity(), AddTimeTableActivity.class);
-                startActivity(intent);
-            }
+        add_timeTable.setOnClickListener(v -> {
+            Intent intent = new Intent(requireActivity(), AddTimeTableActivity.class);
+            startActivity(intent);
         });
 
+        ArrayList<String> days = new ArrayList<>();
+        days.add("Select Day ---");
+        days.add("Monday");
+        days.add("Tuesday");
+        days.add("Wednesday");
+        days.add("Thursday");
+        days.add("Friday");
 
-        ArrayList<String> leaveTypes = new ArrayList<>();
-        leaveTypes.add("Select Day ---");
-        leaveTypes.add("Monday");
-        leaveTypes.add("Tuesday");
-        leaveTypes.add("Wednesday");
-        leaveTypes.add("Thursday");
-        leaveTypes.add("Friday");
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                getContext(),
-                android.R.layout.simple_spinner_item,
-                leaveTypes
-        );
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
+                android.R.layout.simple_spinner_item, days);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
+        sessionItemList = new ArrayList<>();
+        tableListAdapter = new TableListAdapter(sessionItemList);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+        recyclerView.setAdapter(tableListAdapter);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedLeave = parent.getItemAtPosition(position).toString();
-                // Do something with selectedLeave
+                String selectedDay = parent.getItemAtPosition(position).toString();
+                if (!selectedDay.equals("Select Day ---")) {
+                    loadTimeTable(selectedDay);
+                } else {
+                    sessionItemList.clear();
+                    tableListAdapter.notifyDataSetChanged();
+                }
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Handle no selection
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-        LinearLayoutManager linearLayoutManager01 = new LinearLayoutManager(requireActivity());
-        linearLayoutManager01.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(linearLayoutManager01);
-        table01List = new ArrayList<>();
-        table01ListAdapter = new TableListAdapter(table01List);
-        recyclerView.setAdapter(table01ListAdapter);
-
-        loadTable();
         return view;
     }
-    private void loadTable(){
 
-        table01List.add(new Table01("11-A", "8.00 - 9.00"));
-        table01List.add(new Table01("11-B", "9.00 - 10.00"));
-        table01List.add(new Table01("11-C", "10.00 - 11.00"));
-        table01List.add(new Table01("11-E", "11.00 - 12.00"));
-        table01List.add(new Table01("11-D", "12.00 - 1.00"));
+    private void loadTimeTable(String day) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        String userName = sharedPreferences.getString("UserName", "");
 
-        table01ListAdapter.notifyDataSetChanged();
+        db.collection("Schedule")
+                .document(userName)
+                .collection("TimeTable")
+                .document(day)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    sessionItemList.clear();
+
+                    if (documentSnapshot.exists()) {
+                        Map<String, String> sessions = (Map<String, String>) documentSnapshot.get("sessions");
+
+                        if (sessions != null) {
+                            for (Map.Entry<String, String> entry : sessions.entrySet()) {
+                                sessionItemList.add(new SessionItem(entry.getKey(), entry.getValue()));
+                            }
+                        }
+                    }
+
+                    tableListAdapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> Log.e("Firestore", "Error loading " + day + " timetable", e));
     }
 }
-class Table01{
-
-    private String ClassName;
-    private String Time;
 
 
-    public Table01(String className,String time) {
+ class SessionItem {
+    private String sessionNumber;
+    private String className;
 
-        ClassName = className;
-        Time = time;
+    public SessionItem(String sessionNumber, String className) {
+        this.sessionNumber = sessionNumber;
+        this.className = className;
     }
+
+    public String getSessionNumber() {
+        return sessionNumber;
+    }
+
     public String getClassName() {
-        return ClassName;
+        return className;
     }
-    public void setClassName(String className) {
-        ClassName = className;
-    }
-    public String getTime() {
-        return Time;
-    }
-    public void setTime(String time) {
-        Time = time;
-    }
-
 }
-class TableListAdapter extends RecyclerView.Adapter<TableListAdapter.TableViewHolder> {
-    private final List<Table01> tabledetails;
 
-    public TableListAdapter(List<Table01> tdetails) {
-        this.tabledetails = tdetails;
+
+
+ class TableListAdapter extends RecyclerView.Adapter<TableListAdapter.TableViewHolder> {
+    private final List<SessionItem> sessionItems;
+
+    public TableListAdapter(List<SessionItem> sessionItems) {
+        this.sessionItems = sessionItems;
     }
 
     static class TableViewHolder extends RecyclerView.ViewHolder {
-
         TextView ClassTextView;
         TextView TimeTextView;
 
-        View ContainerView;
         public TableViewHolder(@NonNull View itemView) {
             super(itemView);
             ClassTextView = itemView.findViewById(R.id.ClassText);
             TimeTextView = itemView.findViewById(R.id.TimeText);
-            ContainerView = itemView;
         }
     }
 
     @NonNull
     @Override
     public TableViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.class_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.class_item, parent, false);
         return new TableViewHolder(view);
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull TableViewHolder holder, int position) {
-        Table01 TDetails = tabledetails.get(position);
-        holder.ClassTextView.setText(TDetails.getClassName());
-        holder.TimeTextView.setText(TDetails.getTime());
-
+        SessionItem item = sessionItems.get(position);
+        holder.ClassTextView.setText(item.getClassName());
+        holder.TimeTextView.setText( item.getSessionNumber());
     }
 
     @Override
     public int getItemCount() {
-        return tabledetails.size();
+        return sessionItems.size();
     }
 }
+
