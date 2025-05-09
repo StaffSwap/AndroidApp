@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.staffswap.AddTimeTableActivity;
 import com.example.staffswap.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -39,6 +40,7 @@ public class TimeTableFragment extends Fragment {
     List<SessionItem> sessionItemList;
     TableListAdapter tableListAdapter;
     RecyclerView recyclerView;
+    LottieAnimationView lottie;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,6 +49,7 @@ public class TimeTableFragment extends Fragment {
 
         spinner = view.findViewById(R.id.AddTimeTableSpinner);
         recyclerView = view.findViewById(R.id.classRecyclerview);
+        lottie = view.findViewById(R.id.lottie_view02);
         FloatingActionButton add_timeTable = view.findViewById(R.id.floatingActionButtonAddTimeTable);
 
         add_timeTable.setOnClickListener(v -> {
@@ -130,9 +133,24 @@ public class TimeTableFragment extends Fragment {
                                 sessionItemList.add(new SessionItem(entry.getKey(), entry.getValue()));
                             }
                         }
-                    }
 
-                    tableListAdapter.notifyDataSetChanged();
+                    }
+                   requireActivity().runOnUiThread(() -> {
+                        // directly
+                        if (sessionItemList.isEmpty()) {
+                            recyclerView.setVisibility(View.GONE);
+                            lottie.setVisibility(View.VISIBLE);
+                        } else {
+                            recyclerView.setVisibility(View.VISIBLE);
+                            lottie.setVisibility(View.GONE);
+                        }
+
+                        tableListAdapter.notifyDataSetChanged();
+
+                    });
+
+
+
                 })
                 .addOnFailureListener(e -> Log.e("Firestore", "Error loading " + day + " timetable", e));
     }
